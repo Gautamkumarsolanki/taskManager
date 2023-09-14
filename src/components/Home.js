@@ -23,16 +23,9 @@ export default function Home({ setUser, user }) {
 
 			})
 	}
-	const requestPermission = async () => {
-		const premission = await Notification.requestPermission();
-		if (premission === 'granted') {
-			const token = await getToken(messaging, { vapidKey: 'BOm3JXbxrH9qRCll7Ke4IetCYoImlev7DPa3XfMRuWJQGj2y4QpCloaFzE-CnthEpvC1EunFKkrKlqTEuZo7D8Y' })
-			console.log(token);
-		}
-	}
+
 	useEffect(() => {
 		let initialSnapshot = true;
-		requestPermission();
 		if (auth.currentUser) {
 			onSnapshot(user[auth.currentUser.email] === "member" ? query(collection(db, "taskDetail"), where("assignedTo", '==', auth.currentUser.email)) : collection(db, "taskDetail"), (querySnapshot) => {
 				const updatedTask = [];

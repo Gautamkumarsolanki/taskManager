@@ -28,7 +28,7 @@ export const login = (result) => {
 export const signUpWithEmailAndPassword = (email, password) => {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(auth, email, password)
-            .then(async (userCredential) => {
+        .then(async (userCredential) => {
                 const user = userCredential.user;
                 const docRef = doc(db, "users", "oJtV5fLKpNSqlQ9ThiJ8");
                 try {
@@ -42,7 +42,7 @@ export const signUpWithEmailAndPassword = (email, password) => {
                         resolve({ ...res.data().users, [user.email]: "member" });
                     }
                 } catch (error) {
-                    throw new Error(error.message);
+                    reject(error.message);
                 }
             })
             .catch((error) => {
@@ -68,7 +68,7 @@ export const loginWithEmailAndPassword = (email, password) => {
                         resolve({ ...res.data().users, [user.email]: "member" });
                     }
                 } catch (error) {
-                    throw new Error(error.message);
+                    reject(error.message);
                 }
             })
             .catch((error) => {

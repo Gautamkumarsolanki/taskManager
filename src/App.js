@@ -28,9 +28,15 @@ function App() {
 			}
 		})
 	}
+	console.log("da");
 	useEffect(() => {
 		getUser();
 	}, []);
+	useEffect(() => {
+		if (user) {
+			setLoading(false);
+		}
+	}, [user]);
 	if (loading) {
 		return <Loading />;
 	}
@@ -41,7 +47,7 @@ function App() {
 				<Route path="about" element={<About />} />
 			</Route>
 			<Route path="login" element={<Login setLoading={setLoading} islogin={true} user={user} setUser={setUser} />} />
-			<Route path="signup" element={<Login islogin={false} user={user} setUser={setUser} />} />
+			<Route path="signup" element={<Login setLoading={setLoading} islogin={false} user={user} setUser={setUser} />} />
 			<Route path="reset" element={<Reset />} />
 		</Routes>
 	);

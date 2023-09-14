@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { login, loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../utils/api/auth';
 import { Link, Navigate } from 'react-router-dom';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
@@ -8,21 +8,24 @@ const auth = getAuth();
 export default function Login({ user, setUser, islogin, setLoading }) {
 
     const [formData, setFormData] = useState({ email: "", password: "" });
-
+    const [errors, setError] = useState(null);
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        if (islogin) {
-            const res = await loginWithEmailAndPassword(formData.email, formData.password);
-            setUser(res);
-        } else {
-            const res = await signUpWithEmailAndPassword(formData.email, formData.password);
-            setUser(res)
+        try {
+            if (islogin) {
+                const res = await loginWithEmailAndPassword(formData.email, formData.password);
+                setLoading(true);
+                setUser(res);
+            } else {
+                const res = await signUpWithEmailAndPassword(formData.email, formData.password);
+                setLoading(true);
+                setUser(res)
+            }
+        } catch (error) {
+            setError(error);
         }
-        setLoading(true);
     }
-
     const loginWithEmail = async () => {
         signInWithPopup(auth, provider)
             .then(async (result) => {
@@ -32,7 +35,7 @@ export default function Login({ user, setUser, islogin, setLoading }) {
                 setLoading(false);
             })
             .catch((error) => {
-
+                setError(error);
             })
     }
     const changeHandler = (e) => {
@@ -50,11 +53,16 @@ export default function Login({ user, setUser, islogin, setLoading }) {
                         <h2 className="font-bold text-2xl text-[#002D74]">Login</h2> :
                         <h2 className="font-bold text-2xl text-[#002D74]">Create Account</h2>
                     }
+                    {errors &&
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-1 py-1 rounded text-xs" role="alert">
+                            <span className="block sm:inline">{errors}</span>
+                        </div>
+                    }
 
                     <form onSubmit={submitHandler} className="flex flex-col gap-4">
                         <input onChange={changeHandler} required className="p-2 mt-8 rounded-xl border" type="email" name="email" value={formData.email} placeholder="Email" />
                         <input onChange={changeHandler} required minLength={8} className="p-2 rounded-xl border w-full" type="password" name="password" value={formData.password} placeholder="Password" />
-                        <button className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">{login ? "Login" : "Sign Up"}</button>
+                        <button className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">{islogin ? "Login" : "Sign Up"}</button>
                     </form>
 
                     <div className="mt-6 grid grid-cols-3 items-center text-gray-400">
@@ -78,8 +86,8 @@ export default function Login({ user, setUser, islogin, setLoading }) {
                     </div>}
                     <div className="mt-2 text-xs text-[#002D74]">
                         {islogin ?
-                            <p>Dont't have Account ? <Link to={'/signup'} className='underline'>Sign Up</Link></p>
-                            : <p>Already have account ? <Link to={'/login'} className='underline'>Login</Link></p>
+                            <p>Dont't have Account ? <Link onClick={()=>setFormData({email:"",password:""})} to={'/signup'} className='underline'>Sign Up</Link></p>
+                            : <p>Already have account ? <Link onClick={()=>setFormData({email:"",password:""})} to={'/login'} className='underline'>Login</Link></p>
                         }
                     </div>
                 </div>

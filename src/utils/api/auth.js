@@ -83,7 +83,6 @@ export const resetPassword = (email) => {
             return "ok";
         })
         .catch((error) => {
-            const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorMessage);
         });

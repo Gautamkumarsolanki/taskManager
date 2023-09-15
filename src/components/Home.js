@@ -3,8 +3,6 @@ import Navbar from './Navbar'
 import Board from './Board'
 import { collection, getFirestore, onSnapshot, query, where } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
-import { getToken } from 'firebase/messaging';
-import { messaging } from '../utils/firebaseConfig';
 import Loading from './Loading';
 const db = getFirestore();
 const auth = getAuth();
@@ -20,13 +18,13 @@ export default function Home({ setUser, user }) {
 				setUser(null);
 			})
 			.catch((error) => {
-
+				window.alert(error.message);
 			})
 	}
 
 	useEffect(() => {
 		let initialSnapshot = true;
-		if (auth.currentUser) {
+		if (user[auth.currentUser.email]) {
 			onSnapshot(user[auth.currentUser.email] === "member" ? query(collection(db, "taskDetail"), where("assignedTo", '==', auth.currentUser.email)) : collection(db, "taskDetail"), (querySnapshot) => {
 				const updatedTask = [];
 				querySnapshot.docs.forEach((ele) => {

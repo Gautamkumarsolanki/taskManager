@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { login, loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../utils/api/auth';
 import { Link, Navigate } from 'react-router-dom';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
@@ -35,6 +35,7 @@ export default function Login({ user, setUser, islogin, setLoading }) {
                 setLoading(false);
             })
             .catch((error) => {
+                setLoading(false);
                 setError(error);
             })
     }
@@ -86,14 +87,14 @@ export default function Login({ user, setUser, islogin, setLoading }) {
                     </div>}
                     <div className="mt-2 text-xs text-[#002D74]">
                         {islogin ?
-                            <p>Dont't have Account ? <Link onClick={()=>setFormData({email:"",password:""})} to={'/signup'} className='underline'>Sign Up</Link></p>
-                            : <p>Already have account ? <Link onClick={()=>setFormData({email:"",password:""})} to={'/login'} className='underline'>Login</Link></p>
+                            <p>Dont't have Account ? <Link onClick={() => { setFormData({ email: "", password: "" }); setError(null) }} to={'/signup'} className='underline'>Sign Up</Link></p>
+                            : <p>Already have account ? <Link onClick={() => { setFormData({ email: "", password: "" }); setError(null) }} to={'/login'} className='underline'>Login</Link></p>
                         }
                     </div>
                 </div>
 
                 <div className="md:block hidden w-1/2">
-                    <img className="rounded-2xl h-[30rem]" src="https://images.unsplash.com/photo-1692158961403-4d2a98e9878e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80" />
+                    <img alt='' className="rounded-2xl h-[30rem]" src="https://images.unsplash.com/photo-1692158961403-4d2a98e9878e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80" />
                 </div>
             </div>
         </section>

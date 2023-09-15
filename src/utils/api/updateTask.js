@@ -21,7 +21,7 @@ export const addComment=async (data,id)=>{
     console.log(data);
     try {
         await updateDoc(taskDetailDoc, {
-            ["comment"]:arrayUnion(data)
+            "comment":arrayUnion(data)
         },{merge:true})
         return "Done";
     } catch (error) {

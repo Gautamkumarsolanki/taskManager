@@ -37,7 +37,7 @@ export default function Board({ allTask, user }) {
                     {allTask && allTask.length > 0 &&
                         allTask.map((ele, index) => {
         
-                            return (dateFilter?filter==="all"?ele.dueDate===dateFilter:(ele.dueDate===dateFilter && ele.status===filter):filter==="all"?true:ele.status==="filter")?<CardItem user={user} key={index} data={ele} /> : <></>;
+                            return (dateFilter?(filter==="all"?(ele.dueDate===dateFilter):(ele.dueDate===dateFilter && ele.status===filter)):(filter==="all"?true:ele.status===filter))?<CardItem user={user} key={index} data={ele} /> : <></>;
                         })
                     }
                 </div>

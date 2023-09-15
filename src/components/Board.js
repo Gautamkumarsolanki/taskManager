@@ -7,6 +7,7 @@ const auth = getAuth();
 export default function Board({ allTask, user }) {
     const [showModal, setShowModal] = useState(false);
     const [filter, setFilter] = useState("all");
+    const [dateFilter,setDateFilter]=useState(null);
     console.log(user[auth.currentUser.email]);
     return (
         <>
@@ -28,14 +29,15 @@ export default function Board({ allTask, user }) {
                         <option value={"done"} className="pt-6">Done</option>
 
                     </select>
-
+                    <input onChange={(e)=>setDateFilter(e.target.value)} value={dateFilter} name='dueDate' type='date' className='outline-none rounded bg-gray-200 p-2 mt-2' />
                 </div>
                 <hr />
                 <div className='flex flex-wrap gap-8'>
 
                     {allTask && allTask.length > 0 &&
                         allTask.map((ele, index) => {
-                            return (filter === "all" || ele.status === filter) ? <CardItem user={user} key={index} data={ele} /> : <></>;
+        
+                            return (dateFilter?filter==="all"?ele.dueDate===dateFilter:(ele.dueDate===dateFilter && ele.status===filter):filter==="all"?true:ele.status==="filter")?<CardItem user={user} key={index} data={ele} /> : <></>;
                         })
                     }
                 </div>

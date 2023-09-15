@@ -9,10 +9,13 @@ export default function Login({ user, setUser, islogin, setLoading }) {
 
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [errors, setError] = useState(null);
+    const [btnLoading, setBtnLoading] = useState(false);
 
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
+            setError(null);
+            setBtnLoading(true);
             if (islogin) {
                 const res = await loginWithEmailAndPassword(formData.email, formData.password);
                 setLoading(true);
@@ -24,6 +27,8 @@ export default function Login({ user, setUser, islogin, setLoading }) {
             }
         } catch (error) {
             setError(error);
+        } finally {
+            setBtnLoading(false);
         }
     }
     const loginWithEmail = async () => {
@@ -63,7 +68,8 @@ export default function Login({ user, setUser, islogin, setLoading }) {
                     <form onSubmit={submitHandler} className="flex flex-col gap-4">
                         <input onChange={changeHandler} required className="p-2 mt-8 rounded-xl border" type="email" name="email" value={formData.email} placeholder="Email" />
                         <input onChange={changeHandler} required minLength={8} className="p-2 rounded-xl border w-full" type="password" name="password" value={formData.password} placeholder="Password" />
-                        <button className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">{islogin ? "Login" : "Sign Up"}</button>
+                        {islogin ? <button className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">{btnLoading ? "Logging in..." : "Login"}</button> :
+                            <button className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">{btnLoading ? "Signing You..." : "Sign Up"}</button>}
                     </form>
 
                     <div className="mt-6 grid grid-cols-3 items-center text-gray-400">

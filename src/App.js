@@ -1,17 +1,17 @@
 import { Route, Routes } from "react-router-dom";
 import Protector from "./components/Protector";
-import Home from "./components/Home";
-import Login from "./components/Login";
 import About from "./components/About";
-import Reset from "./components/Reset";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Loading from "./components/Loading";
+import Home from "./pages/Home";
+import Reset from "./pages/Reset";
+import Login from "./pages/Login";
 
 const auth = getAuth();
 const db = getFirestore();
-function App() {
+export function App() {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const getUser = async () => {

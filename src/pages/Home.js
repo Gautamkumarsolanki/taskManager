@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
-import Board from './Board'
+import Navbar from '../components/Navbar'
+import Board from '../components/Board'
 import { collection, getFirestore, onSnapshot, query, where } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
-import Loading from './Loading';
+import Loading from '../components/Loading';
 const db = getFirestore();
 const auth = getAuth();
 export default function Home({ setUser, user }) {
